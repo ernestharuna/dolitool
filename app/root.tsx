@@ -8,7 +8,7 @@ import {
 import type { LinksFunction } from "@remix-run/node";
 
 import "./tailwind.css";
-import AppName from "./components/shared/AppName";
+import AppName from "./components/shared/app-name";
 import { Toaster } from "./components/ui/toaster";
 
 export const links: LinksFunction = () => [
@@ -42,8 +42,8 @@ export default function App() {
 
 export function HydrateFallback() {
   return (
-    <div className="flex justify-center mt-[5rem]">
-      <AppName size="text-base" />
+    <div className="flex items-center gap-2 justify-center mt-[5rem]">
+      <AppName size="text-base" /><span className="text-xs">loading</span>
     </div>
   );
 }

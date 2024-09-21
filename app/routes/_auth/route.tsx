@@ -1,6 +1,6 @@
 import { Link, Outlet, redirect } from '@remix-run/react'
 import { AlignRight } from 'lucide-react'
-import AppName from '~/components/shared/AppName'
+import AppName from '~/components/shared/app-name'
 import getAuthUser from '../_user/auth-user';
 import { toast } from '~/hooks/use-toast';
 
