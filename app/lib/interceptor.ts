@@ -1,8 +1,10 @@
 import axios from "axios";
-import { BASE_URL } from "./utils";
+import { API_URL, BASE_URL } from "./utils";
 
 const client = axios.create({
-    baseURL: `${BASE_URL}`, withCredentials: true, withXSRFToken: true,
+    baseURL: `${API_URL}`,
+    withCredentials: true,
+    withXSRFToken: true,
 });
 
 client.interceptors.request.use((config) => {

@@ -67,9 +67,7 @@ export default function UserLayout() {
                             ))}
                             <Form method="POST" action="/logout" className="block w-full"
                                 onSubmit={(event) => {
-                                    const response = confirm(
-                                        "Are you sure you want to logout?"
-                                    );
+                                    const response = confirm("Are you sure you want to logout?");
                                     if (!response) {
                                         event.preventDefault();
                                     }

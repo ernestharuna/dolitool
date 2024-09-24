@@ -1,4 +1,4 @@
-import { ClientActionFunctionArgs, Form, Link, redirect, useActionData } from "@remix-run/react";
+import { ClientActionFunctionArgs, Form, Link, redirect, useActionData, useNavigation } from "@remix-run/react";
 import loginUser from "./login";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
@@ -8,14 +8,15 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
     try {
         await loginUser(credentials);
         return redirect('/dashboard');
-    } catch (error: any) {
-        return { error: error.response?.data?.error || "An unexpected error occurred" };
+    } catch ({ response: { data } }: any) {
+        return { error: data?.error || "An unexpected error occurred" };
     }
 }
 
 export default function Login() {
     const error: any = useActionData<typeof clientAction>();
-    console.log(error);
+    const { state } = useNavigation();
+    const busy = state === "submitting";
 
     return (
         <div>
@@ -47,7 +48,10 @@ export default function Login() {
                         </div>
 
                         <div>
-                            <button type="submit" className="flex w-full justify-center rounded-md bg-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">Sign in</button>
+                            <button type="submit" disabled={busy}
+                                className="flex w-full justify-center rounded-md bg-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                                Sign in
+                            </button>
                         </div>
                     </Form>
 

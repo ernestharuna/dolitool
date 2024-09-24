@@ -1,6 +1,6 @@
-import { ClientActionFunctionArgs, Form, Link, redirect, useActionData } from "@remix-run/react";
+import { ClientActionFunctionArgs, Form, Link, redirect, useActionData, useNavigation } from "@remix-run/react";
 import registerUser from "./register";
-import InputError from "~/components/shared/errors/input-error";
+import InputError from "~/components/shared/input-error";
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
     const formData = await request.formData();
@@ -8,16 +8,17 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
 
     try {
         await registerUser(credentials);
-        return redirect('/dashboard')
+        return redirect('/dashboard');
     } catch ({ response: { data } }: any) {
-        const error: any = data?.errors || "An unexpected error occurred"
+        const error: any = data?.errors || "An unexpected error occurred";
         return error;
     }
 }
 
 export default function Register() {
     const error: any = useActionData<typeof clientAction>();
-    console.log(error);
+    const { state } = useNavigation();
+    const busy = state === "submitting";
 
     return (
         <div>
@@ -64,7 +65,10 @@ export default function Register() {
                         </div>
 
                         <div>
-                            <button type="submit" className="flex w-full justify-center rounded-md bg-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">Sign in</button>
+                            <button type="submit" disabled={busy}
+                                className="flex w-full justify-center rounded-md bg-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
+                                {busy ? "Processing" : "Register"}
+                            </button>
                         </div>
                     </Form>
 
